@@ -6,7 +6,7 @@
 using namespace std;
 
 struct HK {
-    int n, m;
+    int n, m, dd;
     vector<vector<int> > g;
     vector<int> xy, yx, d;
 
@@ -25,7 +25,10 @@ struct HK {
         while(!q.empty()) {
             int x = q.front(); q.pop();
             for(int y : g[x]) {
-                if(yx[y] == -1) return true;
+                if(yx[y] == -1) {
+                    dd = d[x];
+                    return true;
+                }
                 if(d[yx[y]] == -1) {
                     d[yx[y]] = d[x] + 1;
                     q.push(yx[y]);
@@ -37,7 +40,7 @@ struct HK {
 
     bool dfs(int x) {
         for(int y : g[x]) {
-            if(yx[y] == -1 || (d[yx[y]] == d[x] + 1 && dfs(yx[y]))) {
+            if((yx[y] == -1 && dd == d[x]) || (d[yx[y]] == d[x] + 1 && dfs(yx[y]))) {
                 xy[x] = y;
                 yx[y] = x;
                 return true;
@@ -47,7 +50,7 @@ struct HK {
         return false;
     }
 
-    int match(){
+    int match() {
         fill(xy.begin(), xy.end(), -1);
         fill(yx.begin(), yx.end(), -1);
         int matched = 0;
@@ -59,13 +62,13 @@ struct HK {
     }
 };
 
-int main(){
+int main() {
     int n, m;
     scanf("%d%d", &n, &m);
     HK hk(n, m);
     int e;
     scanf("%d", &e);
-    for(int i = 0; i < e; ++i){
+    for(int i = 0; i < e; ++i) {
         int x, y;
         scanf("%d%d", &x, &y);
         hk.g[x].push_back(y);
