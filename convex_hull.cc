@@ -7,6 +7,7 @@ typedef long long ll;
 typedef pair<ll, ll> Point;
 
 vector<Point> ConvexHull(vector<Point> &p) {
+    if (p.size() <= 3) return p;
     swap(*p.begin(), *min_element(p.begin(), p.end()));
     auto ccw = [](Point const &a, Point const &b, Point const &c) {
         return a.first * b.second + b.first * c.second + c.first * a.second
