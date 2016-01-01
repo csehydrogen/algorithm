@@ -13,15 +13,15 @@ vector<Point> ConvexHull(vector<Point> &p) {
              - b.first * a.second - c.first * b.second - a.first * c.second;
     };
     sort(p.begin() + 1, p.end(), [&](Point const &a, Point const &b) {
-        return ccw(*p.begin(), a, b) < 0;
+        return ccw(*p.begin(), a, b) > 0;
     });
     vector<Point> ch(p.begin(), p.begin() + 2);
     for (auto it = p.begin() + 2; it != p.end(); ++it) {
-        while (ch.size() >= 2 && ccw(*(ch.end() - 2), *(ch.end() - 1), *it) >= 0)
+        while (ch.size() >= 2 && ccw(*(ch.end() - 2), *(ch.end() - 1), *it) <= 0)
             ch.pop_back();
         ch.push_back(*it);
     }
-    while (ch.size() >= 2 && ccw(*(ch.end() - 2), *(ch.end() - 1), *p.begin()) >= 0)
+    while (ch.size() >= 2 && ccw(*(ch.end() - 2), *(ch.end() - 1), *p.begin()) <= 0)
         ch.pop_back();
     return ch;
 }
