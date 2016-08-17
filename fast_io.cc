@@ -1,4 +1,4 @@
-#include <unistd.h>
+#include <cstdio>
 #include <cctype>
 class FastIO {
     int fd, bufsz;
@@ -14,10 +14,9 @@ public:
         cur = buf;
         end = buf + bufsz;
         while (true) {
-            int res = read(fd, cur, end - cur);
+            size_t res = fread(cur, sizeof(char), end - cur, stdin);
             if (res == 0) break;
-            if (res > 0)
-                cur += res;
+            cur += res;
         }
         end = cur;
         cur = buf;
@@ -26,7 +25,12 @@ public:
     int readint() {
         while (true) {
             if (cur == end) readbuf();
-            if (isdigit(*cur)) break;
+            if (isdigit(*cur) || *cur == '-') break;
+            ++cur;
+        }
+        bool sign = true;
+        if (*cur == '-') {
+            sign = false;
             ++cur;
         }
         int ret = 0;
@@ -36,6 +40,6 @@ public:
             ret = ret * 10 + (*cur - '0');
             ++cur;
         }
-        return ret;
+        return sign ? ret : -ret;
     }
 };
