@@ -11,7 +11,7 @@ class Fenwick {
 public:
   Fenwick(int _n) : n(_n), a(_n + 1) {}
   void update(int p, T x) { for (; p <= n; p += p & (-p)) a[p] += x; }
-  T query(int p) { T s = 0; for (; p > 0; p -= p & (-p)) s += p; return s; }
+  T query(int p) { T s = 0; for (; p > 0; p -= p & (-p)) s += a[p]; return s; }
 };
 
 /*
